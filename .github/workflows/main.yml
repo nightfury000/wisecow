@@ -2,7 +2,7 @@ name: Wisecow application
 
 on:
   push:
-    tags: # Only trigger on pushes to tags
+    tags: 
   pull_request:
     branches: [ master ]
 
@@ -16,8 +16,8 @@ jobs:
         echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
         echo "DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}" >> .env
       env:
-        DOCKER_USERNAME: # Reference stored username secret
-        DOCKER_PASSWORD: # Reference stored password secret
+        DOCKER_USERNAME: 
+        DOCKER_PASSWORD: 
 
     - name: Build & Push Image
       uses: docker/build-push-action@v2
