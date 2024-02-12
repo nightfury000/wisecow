@@ -3,7 +3,7 @@ FROM ubuntu:latest
 #update packages and install dependencies
 RUN apt-get update -y && apt-get install git cowsay fortune netcat-openbsd -y
 
-#adding "/usr/games" directory to your PATH environment variable
+#adding "/usr/games" directory to your PATH environment variable.
 #RUN echo "export PATH=$PATH:/usr/games" >> /root/.bashrc
 
 
