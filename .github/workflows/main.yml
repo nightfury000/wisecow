@@ -2,19 +2,32 @@ name: Wisecow application
 
 on:
   push:
-   branches: [ master ]
+    tags: # Only trigger on pushes to tags
   pull_request:
     branches: [ master ]
-      
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Build & Push Image
+    - uses: actions/checkout@v3
+    - name: Configure Docker Build Args
       run: |
-        echo "${{ secrets.DOCKERPW }}" | docker login -u "csborle" --password-stdin
-        docker image build -t csborle/wisecow:latest .
-        docker push csborle/wisecow:latest
+        echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
+        echo "DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}" >> .env
+      env:
+        DOCKER_USERNAME: # Reference stored username secret
+        DOCKER_PASSWORD: # Reference stored password secret
+
+    - name: Build & Push Image
+      uses: docker/build-push-action@v2
+      with:
+        context: . # Build context is current directory
+        tags: csborle/wisecow:${{ github.sha }} # Tag with commit SHA
+        push: true # Push to Docker Hub if successful
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }} # Use secrets in action
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Cleanup environment variables
+      run: rm -rf .env
