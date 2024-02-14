@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: wisecow-app
+  name: wisecow-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wisecow-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wisecow-app
+    spec:
+      containers:
+        - image: csborle/wisecow:latest
+          name: frontend
+          ports:
+            - containerPort: 4499
+          resources: {}
+status: {}
