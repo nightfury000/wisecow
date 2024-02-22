@@ -32,10 +32,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
+
       - name: Create kubeconfig 
         run: |
           mkdir ${HOME}/.kube
           echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ${HOME}/.kube/config
 
       - name: Deploy to Kubernetes
-        run: kubectl apply -f deployment.yaml -f service.yaml --validate=false
+        run: kubectl apply -f deployment.yaml -f service.yaml 
